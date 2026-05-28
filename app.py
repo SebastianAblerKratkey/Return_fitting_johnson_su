@@ -188,6 +188,126 @@ plt.tight_layout()
 st.pyplot(fig3)
 plt.close(fig3)
 
+
+# ── Monte Carlo simulation ────────────────────────────────────────────────────
+st.subheader("Monte Carlo simulation")
+
+current_price = float(adj_close.iloc[-1])
+
+col1, col2 = st.columns(2)
+with col1:
+    sim_runs = st.number_input("Number of simulation runs", value=10000, min_value=100, step=1000)
+with col2:
+    sim_years = st.number_input("Simulation horizon (years)", value=10, min_value=1, max_value=50, step=1)
+
+sim_trading_days = int(sim_years * trading_days_per_year)
+
+if st.button("Run simulation"):
+
+    # Draw random returns from fitted Johnson SU distribution
+    returns_sim = stats.johnsonsu.ppf(
+        np.random.uniform(cdf.min(), cdf.max(), size=(sim_trading_days, sim_runs)),
+        a=su_a, b=su_b, loc=su_loc, scale=su_scale
+    )
+
+    # Compound into price paths
+    growth_factors = np.exp(returns_sim)
+    growth_t0 = np.ones((1, growth_factors.shape[1])) * current_price
+    growth_paths = np.vstack((growth_t0, growth_factors))
+    price_paths = np.cumprod(growth_paths, axis=0)
+
+    # Summary statistics at end of horizon
+    final_prices = price_paths[-1, :]
+    mean_final   = float(np.mean(final_prices))
+    median_final = float(np.median(final_prices))
+    pct_5        = float(np.percentile(final_prices, 5))
+    pct_25       = float(np.percentile(final_prices, 25))
+    pct_75       = float(np.percentile(final_prices, 75))
+    pct_95       = float(np.percentile(final_prices, 95))
+
+    # Metrics
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Mean price", f"{mean_final:,.2f}")
+    c2.metric("Median price", f"{median_final:,.2f}")
+    c3.metric("Current price", f"{current_price:,.2f}")
+
+    c4, c5, c6, c7 = st.columns(4)
+    c4.metric("5th percentile",  f"{pct_5:,.2f}")
+    c5.metric("25th percentile", f"{pct_25:,.2f}")
+    c6.metric("75th percentile", f"{pct_75:,.2f}")
+    c7.metric("95th percentile", f"{pct_95:,.2f}")
+
+    # Build date index for x-axis
+    last_date = adj_close.index[-1]
+    sim_dates = pd.bdate_range(start=last_date, periods=sim_trading_days + 1)
+
+    # Plot
+    fig4, ax4 = plt.subplots(figsize=(12, 6))
+
+    # Plot first 300 paths in light grey
+    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=0.5)
+
+    # Mean path
+    mean_path = price_paths.mean(axis=1)
+    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path")
+
+    # Percentile bands
+    ax4.fill_between(sim_dates,
+                     np.percentile(price_paths, 25, axis=1),
+                     np.percentile(price_paths, 75, axis=1),
+                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile")
+    ax4.fill_between(sim_dates,
+                     np.percentile(price_paths, 5, axis=1),
+                     np.percentile(price_paths, 95, axis=1),
+                     color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
+
+    # Annotations at end of horizon
+    days_to_add = sim_trading_days / 120
+    for val, label, color in [
+        (mean_final,   f"Mean: {mean_final:,.0f}",     "mediumslateblue"),
+        (pct_95,       f"95th: {pct_95:,.0f}",         "cornflowerblue"),
+        (pct_5,        f"5th: {pct_5:,.0f}",           "cornflowerblue"),
+    ]:
+        ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
+                 val, label, color=color,
+                 verticalalignment="center", fontsize=9)
+
+    ax4.set_ylabel("Price")
+    ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+    ax4.xaxis.set_major_locator(MaxNLocator())
+    ax4.grid(True, ls="--")
+    ax4.legend(fontsize=9)
+    plt.xticks(rotation=0)
+    plt.tight_layout()
+    st.pyplot(fig4)
+    plt.close(fig4)
+
+    # Return distribution at horizon
+    fig5, ax5 = plt.subplots(figsize=(12, 4))
+    final_returns = (final_prices / current_price - 1)
+    ax5.hist(final_returns, bins=100, color="cornflowerblue", alpha=0.7, density=True)
+    ax5.axvline(float(np.mean(final_returns)),   color="mediumslateblue", lw=1.5, ls="--", label=f"Mean: {float(np.mean(final_returns)):.1%}")
+    ax5.axvline(float(np.median(final_returns)), color="darkmagenta",     lw=1.5, ls="--", label=f"Median: {float(np.median(final_returns)):.1%}")
+    ax5.xaxis.set_major_formatter(plt.FuncFormatter("{:,.0%}".format))
+    ax5.set_xlabel(f"Total return over {sim_years} year(s)")
+    ax5.set_ylabel("Density")
+    ax5.grid(True, ls="--")
+    ax5.legend(fontsize=9)
+    plt.tight_layout()
+    st.pyplot(fig5)
+    plt.close(fig5)
+
+    st.markdown(
+        f"""
+        Based on **{int(sim_runs):,}** simulated price paths over **{sim_years} year(s)** using returns drawn 
+        from the fitted Johnson SU distribution:
+        - Mean final price: **{mean_final:,.2f}** ({float(np.mean(final_returns)):.1%} total return)
+        - Median final price: **{median_final:,.2f}** ({float(np.median(final_returns)):.1%} total return)
+        - 90% of outcomes fall between **{pct_5:,.2f}** and **{pct_95:,.2f}**
+        """
+    )
+
+
 # ── Export return data ────────────────────────────────────────────────────────
 st.subheader("Export")
 
