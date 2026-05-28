@@ -16,7 +16,7 @@ ticker = st.text_input("Enter a Yahoo Finance ticker:", help="Example: ^GSPC")
 
 col1, col2 = st.columns(2)
 with col1:
-    start_date = st.date_input("Start date", value=pd.Timestamp("2000-01-01").date())
+    start_date = st.date_input("Start date", value=pd.Timestamp("1900-01-01").date())
 with col2:
     end_date = st.date_input("End date", value=pd.Timestamp.today().date())
 
