@@ -205,8 +205,9 @@ sim_trading_days = int(sim_years * trading_days_per_year)
 if st.button("Run simulation"):
 
     # Draw random returns from fitted Johnson SU distribution
+    cdf_for_sim = stats.johnsonsu.cdf(return_data, a=su_a, b=su_b, loc=su_loc, scale=su_scale)
     returns_sim = stats.johnsonsu.ppf(
-        np.random.uniform(cdf.min(), cdf.max(), size=(sim_trading_days, sim_runs)),
+        np.random.uniform(cdf_for_sim.min(), cdf_for_sim.max(), size=(sim_trading_days, sim_runs)),
         a=su_a, b=su_b, loc=su_loc, scale=su_scale
     )
 
