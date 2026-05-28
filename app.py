@@ -308,6 +308,29 @@ if st.button("Run simulation"):
         """
     )
 
+    # ── Simulated vs historical moments comparison ────────────────────────────────
+    st.markdown("**Distribution moments — simulated vs historical daily log-returns:**")
+    
+    sim_daily_returns = returns_sim.flatten()
+    
+    moments_df = pd.DataFrame({
+        "Moment": ["Mean", "Standard deviation", "Skewness", "Excess kurtosis"],
+        "Historical": [
+            f"{mean_d:.4%}",
+            f"{std_d:.4%}",
+            f"{skewness_d:.4f}",
+            f"{kurtosis_d:.4f}"
+        ],
+        "Simulated": [
+            f"{float(np.mean(sim_daily_returns)):.4%}",
+            f"{float(np.std(sim_daily_returns)):.4%}",
+            f"{float(pd.Series(sim_daily_returns).skew()):.4f}",
+            f"{float(pd.Series(sim_daily_returns).kurtosis()):.4f}"
+        ]
+    })
+    
+    st.dataframe(moments_df, hide_index=True)
+
 
 # ── Export return data ────────────────────────────────────────────────────────
 st.subheader("Export")
