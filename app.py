@@ -14,12 +14,6 @@ st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finan
 # ── Inputs ────────────────────────────────────────────────────────────────────
 ticker = st.text_input("Enter a Yahoo Finance ticker:", help="Example: ^GSPC")
 
-col1, col2 = st.columns(2)
-with col1:
-    start_date = st.date_input("Start date", value=pd.Timestamp("1900-01-01").date())
-with col2:
-    end_date = st.date_input("End date", value=pd.Timestamp.today().date())
-
 if not ticker:
     st.stop()
 
@@ -29,9 +23,8 @@ ticker = ticker.strip().upper()
 st.write(f"Fetching daily price data for **{ticker}**...")
 
 try:
-    raw = yf.download([ticker], start=start_date, end=end_date, auto_adjust=False)
+    raw = yf.download([ticker], period="max", auto_adjust=False)
 
-    # Flatten MultiIndex columns (yfinance >= 0.2.x)
     if isinstance(raw.columns, pd.MultiIndex):
         raw.columns = [col[0] for col in raw.columns]
 
@@ -39,7 +32,17 @@ try:
         st.error(f"No data found for ticker '{ticker}'. Please check the ticker symbol.")
         st.stop()
 
+    min_date = raw.index.min().date()
+    max_date = raw.index.max().date()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        start_date = st.date_input("Start date", value=min_date, min_value=min_date, max_value=max_date)
+    with col2:
+        end_date = st.date_input("End date", value=max_date, min_value=min_date, max_value=max_date)
+
     adj_close = raw["Adj Close"].astype(float)
+    adj_close = adj_close[(adj_close.index.date >= start_date) & (adj_close.index.date <= end_date)]
 
 except Exception as e:
     st.error(f"Error fetching data: {e}")
