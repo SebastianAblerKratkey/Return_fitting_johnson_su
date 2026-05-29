@@ -212,7 +212,6 @@ plt.tight_layout()
 st.pyplot(fig3)
 plt.close(fig3)
 
-
 # ── Monte Carlo simulation ────────────────────────────────────────────────────
 st.subheader("Monte Carlo simulation")
 
