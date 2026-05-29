@@ -256,14 +256,20 @@ if st.button("Run simulation"):
 
     # Plot
     fig4, ax4 = plt.subplots(figsize=(12, 6))
-
-    # Plot first 300 paths in light grey
+    
+    # Historic price from start of current year to last available date
+    start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
+    historic_ytd = adj_close[adj_close.index >= start_of_year]
+    ax4.plot(historic_ytd.index, historic_ytd.values,
+             color="steelblue", lw=1.5, label="Historical price (YTD)")
+    
+    # Simulated paths starting from last known price
     ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=0.5)
-
+    
     # Mean path
     mean_path = price_paths.mean(axis=1)
     ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path")
-
+    
     # Percentile bands
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 25, axis=1),
@@ -273,18 +279,22 @@ if st.button("Run simulation"):
                      np.percentile(price_paths, 5, axis=1),
                      np.percentile(price_paths, 95, axis=1),
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
-
+    
+    # Vertical line at the boundary between history and simulation
+    ax4.axvline(adj_close.index[-1], color="darkmagenta", lw=1.0,
+                ls="--", label="Last known price")
+    
     # Annotations at end of horizon
     days_to_add = sim_trading_days / 120
     for val, label, color in [
-        (mean_final,   f"Mean: {mean_final:,.0f}",     "mediumslateblue"),
-        (pct_95,       f"95th: {pct_95:,.0f}",         "cornflowerblue"),
-        (pct_5,        f"5th: {pct_5:,.0f}",           "cornflowerblue"),
+        (mean_final, f"Mean: {mean_final:,.0f}",  "mediumslateblue"),
+        (pct_95,     f"95th: {pct_95:,.0f}",      "cornflowerblue"),
+        (pct_5,      f"5th: {pct_5:,.0f}",        "cornflowerblue"),
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
                  val, label, color=color,
                  verticalalignment="center", fontsize=9)
-
+    
     ax4.set_ylabel("Price")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
     ax4.xaxis.set_major_locator(MaxNLocator())
