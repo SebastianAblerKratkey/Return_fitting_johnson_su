@@ -10,16 +10,12 @@ import yfinance as yf
 import pandas_market_calendars as mcal
 import matplotlib.font_manager as fm
 
-
-
+fm.fontManager.addfont("Arial.ttf")
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 8
 
 st.header("Johnson SU Distribution Fitting")
 st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finance ticker.")
-
-available_fonts = sorted([f.name for f in fm.fontManager.ttflist])
-st.write(available_fonts)
 
 # ── Inputs ────────────────────────────────────────────────────────────────────
 ticker = st.text_input("Enter a Yahoo Finance ticker:", help="Example: ^GSPC")
