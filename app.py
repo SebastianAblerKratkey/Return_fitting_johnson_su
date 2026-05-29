@@ -9,6 +9,9 @@ import streamlit as st
 import yfinance as yf
 import pandas_market_calendars as mcal
 
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 8
+
 st.header("Johnson SU Distribution Fitting")
 st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finance ticker.")
 
