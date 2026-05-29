@@ -290,7 +290,7 @@ if st.button("Run simulation"):
     ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
                  xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*0.8), current_price * 1.02),
-                 color="steelblue", fontsize=8,
+                 color="steelblue", fontsize=8, fontweight="bold",
                  verticalalignment="bottom", horizontalalignment="right",
                  zorder=5)
     
@@ -302,7 +302,7 @@ if st.button("Run simulation"):
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
                  val, f"{val:,.0f}", color=color,
-                 verticalalignment="center", fontsize=8, zorder=5)
+                 verticalalignment="center", fontsize=8, fontweight="bold", zorder=5)
     
     ax4.set_ylabel("")
     ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
@@ -313,6 +313,14 @@ if st.button("Run simulation"):
     ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     ax4.spines["top"].set_visible(False)
     ax4.spines["right"].set_visible(False)
+    
+    for label in ax4.get_yticklabels():
+        label.set_fontsize(8)
+        label.set_fontweight("bold")
+    for label in ax4.get_xticklabels():
+        label.set_fontsize(8)
+        label.set_fontweight("bold")
+    
     plt.xticks(rotation=0)
     plt.tight_layout()
     st.pyplot(fig4)
