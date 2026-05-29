@@ -280,7 +280,7 @@ if st.button("Run simulation"):
                      np.percentile(price_paths, 95, axis=1),
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
     
-    # Vertical line at the boundary between history and simulation
+    days_to_add = sim_trading_days / 120
     ax4.annotate(f"{current_price:,.2f}",
                  xy=(adj_close.index[-1], current_price),
                  xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price),
@@ -289,7 +289,6 @@ if st.button("Run simulation"):
     ax4.scatter(adj_close.index[-1], current_price, color="steelblue", zorder=5)
     
     # Annotations at end of horizon
-    days_to_add = sim_trading_days / 120
     for val, label, color in [
         (mean_final, f"Mean: {mean_final:,.0f}",  "mediumslateblue"),
         (pct_95,     f"95th: {pct_95:,.0f}",      "cornflowerblue"),
