@@ -283,11 +283,11 @@ if st.button("Run simulation"):
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 5, axis=1),
                      np.percentile(price_paths, 95, axis=1),
-                     color="8497B0", alpha=0.15, label="5th–95th percentile", zorder=2)
+                     color="cornflowerblue", alpha=0.15, label="5th–95th percentile", zorder=2)
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 25, axis=1),
                      np.percentile(price_paths, 75, axis=1),
-                     color="8497B0", alpha=0.3, label="25th–75th percentile", zorder=2)
+                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile", zorder=2)
     
     # Mean path — top layer
     mean_path = price_paths.mean(axis=1)
