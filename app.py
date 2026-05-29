@@ -156,9 +156,9 @@ for label in ax_a.get_xticklabels():
     label.set_fontsize(8)
 
 plt.tight_layout()
-fig_a.text(0.0, -0.02,
-           f"Kolmogorov-Smirnov test p-value — Johnson SU distribution: {p_value_jsu:.1%}, Normal distribution: {p_value_norm:.1%}",
-           ha="center", va="top", fontsize=7, color="grey")
+#fig_a.text(0.0, -0.02,
+ #          f"Kolmogorov-Smirnov test p-value — Johnson SU distribution: {p_value_jsu:.1%}, Normal distribution: {p_value_norm:.1%}",
+  #         ha="center", va="top", fontsize=7, color="grey")
 st.pyplot(fig_a)
 plt.close(fig_a)
 
@@ -409,8 +409,19 @@ if st.button("Run simulation"):
     
     st.dataframe(moments_df, hide_index=True)
 
+    moments_export_df = pd.DataFrame({
+    "Moment": ["Mean", "Standard deviation", "Skewness", "Excess kurtosis"],
+    "Historical": [mean_d, std_d, skewness_d, kurtosis_d],
+    "Simulated": [
+        float(np.mean(sim_daily_returns)),
+        float(np.std(sim_daily_returns)),
+        float(pd.Series(sim_daily_returns).skew()),
+        float(pd.Series(sim_daily_returns).kurtosis())
+        ]
+    })
+    
     towrite = BytesIO()
-    moments_df.to_excel(towrite, index=False)
+    moments_export_df.to_excel(towrite, index=False)
     towrite.seek(0)
     b64 = base64.b64encode(towrite.read()).decode()
     st.markdown(
