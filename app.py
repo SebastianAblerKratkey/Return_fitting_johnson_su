@@ -268,7 +268,7 @@ if st.button("Run simulation"):
              color="steelblue", lw=1.5, label="Historical price (YTD)")
     
     # Simulated paths starting from last known price
-    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=0.5)
+    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=1.5)
     
     # Mean path
     mean_path = price_paths.mean(axis=1)
@@ -285,28 +285,30 @@ if st.button("Run simulation"):
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
     
     # Current price annotation
-    ax4.annotate(f"{current_price:,.2f}",
+    ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
-                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price * 1.02),
-                 color="steelblue", fontsize=9,
-                 verticalalignment="bottom", horizontalalignment="right")
+                 xytext=(adj_close.index[-1] + pd.Timedelta(days=days_to_add*0.5), current_price * 1.02),
+                 color="steelblue", fontsize=8,
+                 verticalalignment="bottom", horizontalalignment="left")
     
     # Annotations at end of horizon
-    for val, label, color in [
-        (mean_final, f"Mean: {mean_final:,.0f}",  "mediumslateblue"),
-        (pct_95,     f"95th: {pct_95:,.0f}",      "cornflowerblue"),
-        (pct_5,      f"5th: {pct_5:,.0f}",        "cornflowerblue"),
+    for val, color in [
+        (mean_final, "mediumslateblue"),
+        (pct_75,     "cornflowerblue"),
+        (pct_25,     "cornflowerblue"),
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
-                 val, label, color=color,
-                 verticalalignment="center", fontsize=9)
+                 val, f"{val:,.0f}", color=color,
+                 verticalalignment="center", fontsize=8)
     
     ax4.set_ylabel("Price")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
     ax4.xaxis.set_major_locator(MaxNLocator())
     ax4.grid(False)
-    ax4.legend(fontsize=9)
+    ax4.legend(fontsize=8)
     ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
+    ax4.spines["top"].set_visible(False)
+    ax4.spines["right"].set_visible(False)
     plt.xticks(rotation=0)
     plt.tight_layout()
     st.pyplot(fig4)
