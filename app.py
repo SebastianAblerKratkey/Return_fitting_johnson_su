@@ -309,7 +309,7 @@ if st.button("Run simulation"):
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
     ax4.xaxis.set_major_locator(MaxNLocator())
     ax4.grid(False)
-    ax4.legend(fontsize=8)
+    ax4.legend(fontsize=8, frameon=False)
     ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     ax4.spines["top"].set_visible(False)
     ax4.spines["right"].set_visible(False)
