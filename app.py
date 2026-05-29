@@ -274,8 +274,11 @@ if st.button("Run simulation"):
     ax4.plot(historic_ytd.index, historic_ytd.values,
              color="#001836", lw=1.5, label="Price development (YTD)", zorder=4)
     
-    # Simulated paths — lowest layer
-    ax4.plot(sim_dates, price_paths[:, :300], color="#D1D1D1", alpha=0.5, lw=1.5, zorder=1)
+    # Simulated paths — lowest layer (single entry for legend)
+    sim_lines = ax4.plot(sim_dates, price_paths[:, :300], color="#D1D1D1", alpha=0.5, lw=1.5, zorder=1)
+    sim_lines[0].set_label("Simulated price paths (YTG)")
+    for line in sim_lines[1:]:
+        line.set_label("_nolegend_")
     
     # Percentile bands — above simulation lines
     ax4.fill_between(sim_dates,
@@ -302,8 +305,10 @@ if st.button("Run simulation"):
     # Annotations at end of horizon
     for val, color in [
         (mean_final, "#8497B0"),
+        (pct_95,     "cornflowerblue"),
         (pct_75,     "cornflowerblue"),
         (pct_25,     "cornflowerblue"),
+        (pct_5,      "cornflowerblue"),
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
                  val, f"{val:,.0f}", color=color,
@@ -311,15 +316,11 @@ if st.button("Run simulation"):
     
     ax4.set_ylabel("")
     ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
-    #ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
-    #ax4.xaxis.set_major_locator(mdates.MonthLocator())
-    #ax4.xaxis.set_major_locator(mdates.MonthLocator(bymonthday=1))
     ax4.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
     ax4.figure.autofmt_xdate(rotation=0, ha="center")
     ax4.grid(False)
     ax4.legend(fontsize=8, frameon=False)
-    #ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     ax4.set_xlim(left=pd.Timestamp(pd.Timestamp.today().year, 1, 1), right=sim_dates[-1])
     ax4.spines["top"].set_visible(False)
     ax4.spines["right"].set_visible(False)
