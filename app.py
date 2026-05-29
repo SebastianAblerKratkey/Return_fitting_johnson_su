@@ -11,6 +11,7 @@ import pandas_market_calendars as mcal
 import os
 import matplotlib.font_manager as fm
 
+
 font_path = os.path.join(os.path.dirname(__file__), "ARIAL.TTF")
 font_path_bold = os.path.join(os.path.dirname(__file__), "ARIALBD.TTF")
 fm.fontManager.addfont(font_path)
