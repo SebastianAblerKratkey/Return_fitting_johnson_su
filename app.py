@@ -10,7 +10,7 @@ import yfinance as yf
 import pandas_market_calendars as mcal
 import matplotlib.font_manager as fm
 
-plt.rcParams["font.family"] = "DejaVu Sans"
+plt.rcParams["font.family"] = "Liberation Sans"
 plt.rcParams["font.size"] = 8
 
 st.header("Johnson SU Distribution Fitting")
