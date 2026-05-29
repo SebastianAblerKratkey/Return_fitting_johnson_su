@@ -304,7 +304,7 @@ if st.button("Run simulation"):
     ax4.set_ylabel("Price")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
     ax4.xaxis.set_major_locator(MaxNLocator())
-    ax4.grid(True, ls="--")
+    ax4.grid(False)
     ax4.legend(fontsize=9)
     ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     plt.xticks(rotation=0)
