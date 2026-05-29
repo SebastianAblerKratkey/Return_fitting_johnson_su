@@ -10,8 +10,6 @@ import yfinance as yf
 import pandas_market_calendars as mcal
 import matplotlib.font_manager as fm
 
-#fm.fontManager.addfont("ARIAL.TTF")
-
 plt.rcParams["font.family"] = "DejaVu Sans"
 plt.rcParams["font.size"] = 8
 
