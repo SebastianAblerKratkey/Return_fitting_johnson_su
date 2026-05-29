@@ -156,9 +156,9 @@ for label in ax_a.get_xticklabels():
     label.set_fontsize(8)
 
 plt.tight_layout()
-#fig_a.text(0.0, -0.02,
- #          f"Kolmogorov-Smirnov test p-value — Johnson SU distribution: {p_value_jsu:.1%}, Normal distribution: {p_value_norm:.1%}",
-  #         ha="center", va="top", fontsize=7, color="grey")
+fig_a.text(0.0, -0.02,
+           f"Kolmogorov-Smirnov test p-value — Johnson SU distribution: {p_value_jsu:.1%}, Normal distribution: {p_value_norm:.1%}",
+           ha="center", va="top", fontsize=7)
 st.pyplot(fig_a)
 plt.close(fig_a)
 
