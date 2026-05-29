@@ -346,14 +346,27 @@ if st.button("Run simulation"):
     plt.close(fig4)
 
     # Return distribution at horizon
-    fig5, ax5 = plt.subplots(figsize=(12, 4))
-    ax5.hist(final_prices, bins=100, color="cornflowerblue", alpha=0.7, density=True)
-    ax5.axvline(mean_final,   color="mediumslateblue", lw=1.5, ls="--", label=f"Mean: {mean_final:,.2f}")
-    ax5.axvline(median_final, color="darkmagenta",     lw=1.5, ls="--", label=f"Median: {median_final:,.2f}")
+    fig5, ax5 = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
+    
+    ax5.hist(final_prices, bins=100, color="#D1D1D1", density=True,
+             label="Simulated prices at end of horizon")
+    ax5.axvline(mean_final,   color="#001836", lw=1.5, label=f"Mean: {mean_final:,.0f}")
+    ax5.axvline(median_final, color="#8497B0", lw=1.5, label=f"Median: {median_final:,.0f}")
+    
     ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date})")
     ax5.set_ylabel("Density")
-    ax5.grid(True, ls="--")
-    ax5.legend(fontsize=9)
+    ax5.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
+    ax5.grid(False)
+    ax5.legend(fontsize=8, frameon=False, loc="upper left")
+    ax5.spines["top"].set_visible(False)
+    ax5.spines["right"].set_visible(False)
+    ax5.tick_params(axis="both", length=0)
+    
+    for label in ax5.get_yticklabels():
+        label.set_fontsize(8)
+    for label in ax5.get_xticklabels():
+        label.set_fontsize(8)
+    
     plt.tight_layout()
     st.pyplot(fig5)
     plt.close(fig5)
