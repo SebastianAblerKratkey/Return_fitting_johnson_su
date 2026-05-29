@@ -8,6 +8,10 @@ from io import BytesIO
 import streamlit as st
 import yfinance as yf
 import pandas_market_calendars as mcal
+import matplotlib.font_manager as fm
+
+available_fonts = sorted([f.name for f in fm.fontManager.ttflist])
+st.write(available_fonts)
 
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 8
