@@ -7,6 +7,7 @@ import scipy.stats as stats
 from io import BytesIO
 import streamlit as st
 import yfinance as yf
+import pandas_market_calendars as mcal
 
 st.header("Johnson SU Distribution Fitting")
 st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finance ticker.")
@@ -194,14 +195,24 @@ st.subheader("Monte Carlo simulation")
 
 current_price = float(adj_close.iloc[-1])
 
+exchanges = mcal.get_calendar_names()
+default_exchange = exchanges.index("NYSE")
+exchange = st.selectbox("Select exchange", exchanges, index=default_exchange)
+
 col1, col2 = st.columns(2)
 with col1:
     sim_runs = st.number_input("Number of simulation runs", value=10000, min_value=100, step=1000)
 with col2:
-    sim_years = st.number_input("Simulation horizon (years)", value=10, min_value=1, max_value=50, step=1)
+    sim_end_date = st.date_input("Simulation end date", value=pd.Timestamp.today().date() + pd.DateOffset(years=10))
 
-sim_trading_days = int(sim_years * trading_days_per_year)
+cal = mcal.get_calendar(exchange)
+trading_days = mcal.date_range(
+    cal.schedule(start_date=adj_close.index[-1].date(), end_date=sim_end_date), 
+    frequency='1D'
+)
+sim_trading_days = len(trading_days) - 1
 
+st.write(f"Number of trading days to simulate: **{sim_trading_days:,}**")
 if st.button("Run simulation"):
 
     # Draw random returns from fitted Johnson SU distribution
