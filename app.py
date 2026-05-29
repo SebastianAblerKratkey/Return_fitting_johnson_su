@@ -408,6 +408,16 @@ if st.button("Run simulation"):
     
     st.dataframe(moments_df, hide_index=True)
 
+    towrite = BytesIO()
+    moments_df.to_excel(towrite, index=False)
+    towrite.seek(0)
+    b64 = base64.b64encode(towrite.read()).decode()
+    st.markdown(
+        f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" '
+        f'download="distribution_moments_{ticker}.xlsx">Download distribution moments as Excel</a>',
+        unsafe_allow_html=True
+    )
+
 
 # ── Export return data ────────────────────────────────────────────────────────
 st.subheader("Export")
