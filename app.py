@@ -309,10 +309,10 @@ if st.button("Run simulation"):
 
     st.markdown(
         f"""
-        Based on **{int(sim_runs):,}** simulated price paths over **{sim_years} year(s)** using returns drawn 
+        Based on **{int(sim_runs):,}** simulated price paths until **{sim_end_date}** using returns drawn 
         from the fitted Johnson SU distribution:
-        - Mean final price: **{mean_final:,.2f}** ({float(np.mean(final_returns)):.1%} total return)
-        - Median final price: **{median_final:,.2f}** ({float(np.median(final_returns)):.1%} total return)
+        - Mean final price: **{mean_final:,.2f}**
+        - Median final price: **{median_final:,.2f}**
         - 90% of outcomes fall between **{pct_5:,.2f}** and **{pct_95:,.2f}**
         """
     )
