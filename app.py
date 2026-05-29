@@ -262,7 +262,7 @@ if st.button("Run simulation"):
 
     # Plot
     fig4, ax4 = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
-    
+
     # Historic price from start of current year to last available date
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
     historic_ytd = adj_close[adj_close.index >= start_of_year]
@@ -286,10 +286,10 @@ if st.button("Run simulation"):
     mean_path = price_paths.mean(axis=1)
     ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path", zorder=3)
     
-    # Current price annotation — anchored to last historic date, offset left
+    # Current price annotation — just above end of historic line, slight left offset
     ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
-                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*3), current_price * 1.02),
+                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*0.8), current_price * 1.02),
                  color="steelblue", fontsize=8,
                  verticalalignment="bottom", horizontalalignment="right",
                  zorder=5)
@@ -304,8 +304,9 @@ if st.button("Run simulation"):
                  val, f"{val:,.0f}", color=color,
                  verticalalignment="center", fontsize=8, zorder=5)
     
-    ax4.set_ylabel("Price")
-    ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+    ax4.set_ylabel("")
+    ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
+    ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
     ax4.xaxis.set_major_locator(MaxNLocator())
     ax4.grid(False)
     ax4.legend(fontsize=8)
