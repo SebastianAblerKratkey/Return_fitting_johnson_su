@@ -131,11 +131,57 @@ color1 = "cornflowerblue"
 color2 = "darkmagenta"
 color3 = "royalblue"
 
-Good, a few more adjustments: 
+# ── Chart A: Histogram + PDFs ─────────────────────────────────────────────────
+fig_a, ax_a = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
 
-1. The legend should be top left in both charts.
-2. Don't use em-dashes in the legend
-3. for the x-axis the zero after the "." is not needed simply use 20% or 15% etc.
+ax_a.hist(return_data, bins=100, density=True,
+          color="#D1D1D1", label="Histogram of daily log-returns")
+ax_a.plot(return_data, pdf_jsu,  color="#001836", lw=1.5, label="PDF Johnson SU distribution")
+ax_a.plot(return_data, pdf_norm, color="#8497B0",  lw=1.5, label="PDF Normal distribution")
+
+ax_a.set_ylabel("Density")
+ax_a.set_xlabel("Daily log-returns")
+ax_a.xaxis.set_major_formatter(plt.FuncFormatter("{:.0%}".format))
+ax_a.grid(False)
+ax_a.legend(fontsize=8, frameon=False, loc="upper left")
+ax_a.spines["top"].set_visible(False)
+ax_a.spines["right"].set_visible(False)
+ax_a.tick_params(axis="both", length=0)
+
+for label in ax_a.get_yticklabels():
+    label.set_fontsize(8)
+for label in ax_a.get_xticklabels():
+    label.set_fontsize(8)
+
+plt.tight_layout()
+st.pyplot(fig_a)
+plt.close(fig_a)
+
+# ── Chart B: Empirical vs fitted CDFs ────────────────────────────────────────
+fig_b, ax_b = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
+
+ax_b.plot(return_data, edf,      color="#D1D1D1", lw=1.5, label="Empirical distribution function")
+ax_b.plot(return_data, cdf_jsu,  color="#001836", lw=1.5, label="CDF Johnson SU distribution")
+ax_b.plot(return_data, cdf_norm, color="#8497B0",  lw=1.5, label="CDF Normal distribution")
+
+ax_b.set_ylabel("Cumulative probability")
+ax_b.set_xlabel("Daily log-returns")
+ax_b.xaxis.set_major_formatter(plt.FuncFormatter("{:.0%}".format))
+ax_b.grid(False)
+ax_b.legend(fontsize=8, frameon=False, loc="upper left")
+ax_b.spines["top"].set_visible(False)
+ax_b.spines["right"].set_visible(False)
+ax_b.tick_params(axis="both", length=0)
+
+for label in ax_b.get_yticklabels():
+    label.set_fontsize(8)
+for label in ax_b.get_xticklabels():
+    label.set_fontsize(8)
+
+plt.tight_layout()
+st.pyplot(fig_b)
+plt.close(fig_b)
+
 # ── Rolling volatility chart ──────────────────────────────────────────────────
 st.subheader("Rolling volatility")
 
