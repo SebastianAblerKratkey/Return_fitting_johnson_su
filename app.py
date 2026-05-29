@@ -310,8 +310,11 @@ if st.button("Run simulation"):
     
     ax4.set_ylabel("")
     ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
+    #ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
+    #ax4.xaxis.set_major_locator(mdates.MonthLocator())
+    ax4.xaxis.set_major_locator(mdates.MonthLocator(bymonthday=1))
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b-%y"))
-    ax4.xaxis.set_major_locator(mdates.MonthLocator())
+    ax4.figure.autofmt_xdate(rotation=0, ha="center")
     ax4.grid(False)
     ax4.legend(fontsize=8, frameon=False)
     #ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
