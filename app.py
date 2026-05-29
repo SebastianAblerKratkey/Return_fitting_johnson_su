@@ -353,7 +353,7 @@ if st.button("Run simulation"):
     ax5.axvline(mean_final,   color="#001836", lw=1.5, label=f"Mean: {mean_final:,.0f}")
     ax5.axvline(median_final, color="#8497B0", lw=1.5, label=f"Median: {median_final:,.0f}")
     
-    ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date})")
+    ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date.strftime('%d-%b-%y')})")
     ax5.set_ylabel("Density")
     ax5.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
     ax5.grid(False)
