@@ -10,6 +10,7 @@ import yfinance as yf
 import pandas_market_calendars as mcal
 import os
 import matplotlib.font_manager as fm
+import base64
 
 
 font_path = os.path.join(os.path.dirname(__file__), "ARIAL.TTF")
@@ -157,7 +158,7 @@ for label in ax_a.get_xticklabels():
 plt.tight_layout()
 fig_a.text(0.0, -0.02,
            f"Kolmogorov-Smirnov test p-value — Johnson SU distribution: {p_value_jsu:.1%}, Normal distribution: {p_value_norm:.1%}",
-           ha="center", va="top", fontsize=8)
+           ha="center", va="top", fontsize=7, color="grey")
 st.pyplot(fig_a)
 plt.close(fig_a)
 
@@ -431,7 +432,6 @@ export_df = pd.DataFrame({
 towrite = BytesIO()
 export_df.to_excel(towrite, index=False)
 towrite.seek(0)
-import base64
 b64 = base64.b64encode(towrite.read()).decode()
 st.markdown(
     f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" '
