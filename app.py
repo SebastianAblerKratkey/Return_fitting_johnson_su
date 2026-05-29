@@ -286,7 +286,6 @@ if st.button("Run simulation"):
                  xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price),
                  color="steelblue", fontsize=9,
                  verticalalignment="center", horizontalalignment="right")
-    ax4.scatter(adj_close.index[-1], current_price, color="steelblue", zorder=5)
     
     # Annotations at end of horizon
     for val, label, color in [
