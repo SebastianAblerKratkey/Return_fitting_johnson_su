@@ -281,8 +281,12 @@ if st.button("Run simulation"):
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
     
     # Vertical line at the boundary between history and simulation
-    ax4.axvline(adj_close.index[-1], color="darkmagenta", lw=1.0,
-                ls="--", label="Last known price")
+    ax4.annotate(f"{current_price:,.2f}",
+                 xy=(adj_close.index[-1], current_price),
+                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price),
+                 color="steelblue", fontsize=9,
+                 verticalalignment="center", horizontalalignment="right")
+    ax4.scatter(adj_close.index[-1], current_price, color="steelblue", zorder=5)
     
     # Annotations at end of horizon
     days_to_add = sim_trading_days / 120
