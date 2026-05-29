@@ -304,10 +304,10 @@ if st.button("Run simulation"):
     # Annotations at end of horizon
     for val, color in [
         (mean_final, "#8497B0"),
-        (pct_95,     "8497B0"),
-        (pct_75,     "8497B0"),
-        (pct_25,     "8497B0"),
-        (pct_5,      "8497B0"),
+        (pct_95,     "cornflowerblue"),
+        (pct_75,     "cornflowerblue"),
+        (pct_25,     "cornflowerblue"),
+        (pct_5,      "cornflowerblue"),
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
                  val, f"{val:,.0f}", color=color,
