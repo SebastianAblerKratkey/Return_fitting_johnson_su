@@ -256,7 +256,7 @@ if st.button("Run simulation"):
 
     # Plot
     fig4, ax4 = plt.subplots(figsize=(12, 6))
-    
+
     # Historic price from start of current year to last available date
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
     historic_ytd = adj_close[adj_close.index >= start_of_year]
@@ -280,12 +280,12 @@ if st.button("Run simulation"):
                      np.percentile(price_paths, 95, axis=1),
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
     
-    days_to_add = sim_trading_days / 120
+    # Current price annotation
     ax4.annotate(f"{current_price:,.2f}",
                  xy=(adj_close.index[-1], current_price),
-                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price),
+                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*2), current_price * 1.02),
                  color="steelblue", fontsize=9,
-                 verticalalignment="center", horizontalalignment="right")
+                 verticalalignment="bottom", horizontalalignment="right")
     
     # Annotations at end of horizon
     for val, label, color in [
@@ -302,6 +302,7 @@ if st.button("Run simulation"):
     ax4.xaxis.set_major_locator(MaxNLocator())
     ax4.grid(True, ls="--")
     ax4.legend(fontsize=9)
+    ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     plt.xticks(rotation=0)
     plt.tight_layout()
     st.pyplot(fig4)
