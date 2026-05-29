@@ -203,7 +203,8 @@ col1, col2 = st.columns(2)
 with col1:
     sim_runs = st.number_input("Number of simulation runs", value=10000, min_value=100, step=1000)
 with col2:
-    sim_end_date = st.date_input("Simulation end date", value=pd.Timestamp.today().date() + pd.DateOffset(years=10))
+    end_of_year = pd.Timestamp(pd.Timestamp.today().year, 12, 31).date()
+    sim_end_date = st.date_input("Simulation end date", value=end_of_year)
 
 cal = mcal.get_calendar(exchange)
 trading_days = mcal.date_range(
