@@ -316,10 +316,8 @@ if st.button("Run simulation"):
     
     for label in ax4.get_yticklabels():
         label.set_fontsize(8)
-        label.set_fontweight("bold")
     for label in ax4.get_xticklabels():
         label.set_fontsize(8)
-        label.set_fontweight("bold")
     
     plt.xticks(rotation=0)
     plt.tight_layout()
