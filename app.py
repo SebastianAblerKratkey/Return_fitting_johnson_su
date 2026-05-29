@@ -357,7 +357,7 @@ if st.button("Run simulation"):
     ax5.set_ylabel("Density")
     ax5.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
     ax5.grid(False)
-    ax5.legend(fontsize=8, frameon=False, loc="upper left")
+    ax5.legend(fontsize=8, frameon=False, loc="best")
     ax5.spines["top"].set_visible(False)
     ax5.spines["right"].set_visible(False)
     ax5.tick_params(axis="both", length=0)
