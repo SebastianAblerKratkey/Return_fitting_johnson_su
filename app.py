@@ -348,13 +348,13 @@ if st.button("Run simulation"):
     # Return distribution at horizon
     fig5, ax5 = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
     
-    ax5.hist(final_prices, bins=100, color="#D1D1D1", density=True,
+    ax5.hist(final_prices, bins=100, color="#D1D1D1",
              label="Simulated prices at end of horizon")
     ax5.axvline(mean_final,   color="#001836", lw=1.5, label=f"Mean: {mean_final:,.0f}")
     ax5.axvline(median_final, color="#8497B0", lw=1.5, label=f"Median: {median_final:,.0f}")
     
     ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date.strftime('%d-%b-%y')})")
-    ax5.set_ylabel("Density")
+    ax5.set_ylabel("Frequency")
     ax5.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
     ax5.grid(False)
     ax5.legend(fontsize=8, frameon=False, loc="best")
