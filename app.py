@@ -261,7 +261,7 @@ if st.button("Run simulation"):
     sim_dates = pd.bdate_range(start=last_date, periods=sim_trading_days + 1)
 
     # Plot
-    fig4, ax4 = plt.subplots(figsize=(12, 6))
+    fig4, ax4 = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
     
     # Historic price from start of current year to last available date
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
