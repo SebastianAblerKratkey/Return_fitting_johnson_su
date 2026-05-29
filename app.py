@@ -8,10 +8,14 @@ from io import BytesIO
 import streamlit as st
 import yfinance as yf
 import pandas_market_calendars as mcal
+import os
 import matplotlib.font_manager as fm
 
-plt.rcParams["font.family"] = "Liberation Sans"
+font_path = os.path.join(os.path.dirname(__file__), "ARIAL.TTF")
+fm.fontManager.addfont(font_path)
+plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 8
+
 
 st.header("Johnson SU Distribution Fitting")
 st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finance ticker.")
