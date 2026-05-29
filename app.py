@@ -272,7 +272,7 @@ if st.button("Run simulation"):
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
     historic_ytd = adj_close[adj_close.index >= start_of_year]
     ax4.plot(historic_ytd.index, historic_ytd.values,
-             color="#001836", lw=1.5, label="Historical price (YTD)", zorder=4)
+             color="#001836", lw=1.5, label="Price development (YTD)", zorder=4)
     
     # Simulated paths — lowest layer
     ax4.plot(sim_dates, price_paths[:, :300], color="#D1D1D1", alpha=0.5, lw=1.5, zorder=1)
@@ -318,6 +318,7 @@ if st.button("Run simulation"):
     ax4.set_xlim(left=historic_ytd.index[0], right=sim_dates[-1])
     ax4.spines["top"].set_visible(False)
     ax4.spines["right"].set_visible(False)
+    ax4.tick_params(axis="both", length=0)
     
     for label in ax4.get_yticklabels():
         label.set_fontsize(8)
