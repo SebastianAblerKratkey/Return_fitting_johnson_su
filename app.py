@@ -270,26 +270,26 @@ if st.button("Run simulation"):
     # Simulated paths starting from last known price
     ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=1.5)
     
-    # Mean path
-    mean_path = price_paths.mean(axis=1)
-    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path")
-    
-    # Percentile bands
-    ax4.fill_between(sim_dates,
-                     np.percentile(price_paths, 25, axis=1),
-                     np.percentile(price_paths, 75, axis=1),
-                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile")
+    # Percentile bands drawn AFTER simulation lines so they appear on top
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 5, axis=1),
                      np.percentile(price_paths, 95, axis=1),
                      color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
+    ax4.fill_between(sim_dates,
+                     np.percentile(price_paths, 25, axis=1),
+                     np.percentile(price_paths, 75, axis=1),
+                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile")
     
-    # Current price annotation
+    # Mean path drawn on top of everything
+    mean_path = price_paths.mean(axis=1)
+    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path")
+    
+    # Current price annotation — kept to the left of simulation start
     ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
-                 xytext=(adj_close.index[-1] + pd.Timedelta(days=days_to_add*0.5), current_price * 1.02),
+                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*0.5), current_price * 1.02),
                  color="steelblue", fontsize=8,
-                 verticalalignment="bottom", horizontalalignment="left")
+                 verticalalignment="bottom", horizontalalignment="right")
     
     # Annotations at end of horizon
     for val, color in [
