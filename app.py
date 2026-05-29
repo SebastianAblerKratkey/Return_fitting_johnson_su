@@ -270,10 +270,10 @@ if st.button("Run simulation"):
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
     historic_ytd = adj_close[adj_close.index >= start_of_year]
     ax4.plot(historic_ytd.index, historic_ytd.values,
-             color="steelblue", lw=1.5, label="Historical price (YTD)", zorder=4)
+             color="#001836", lw=1.5, label="Historical price (YTD)", zorder=4)
     
     # Simulated paths — lowest layer
-    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=1.5, zorder=1)
+    ax4.plot(sim_dates, price_paths[:, :300], color="#D1D1D1", alpha=0.5, lw=1.5, zorder=1)
     
     # Percentile bands — above simulation lines
     ax4.fill_between(sim_dates,
@@ -287,19 +287,19 @@ if st.button("Run simulation"):
     
     # Mean path — top layer
     mean_path = price_paths.mean(axis=1)
-    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path", zorder=3)
+    ax4.plot(sim_dates, mean_path, color="#8497B0", lw=1.5, label="Mean path", zorder=3)
     
     # Current price annotation — just above end of historic line, slight left offset
     ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
                  xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*0.8), current_price * 1.02),
-                 color="steelblue", fontsize=8, fontweight="bold",
+                 color="#001836", fontsize=8, fontweight="bold",
                  verticalalignment="bottom", horizontalalignment="right",
                  zorder=5)
     
     # Annotations at end of horizon
     for val, color in [
-        (mean_final, "mediumslateblue"),
+        (mean_final, "#8497B0"),
         (pct_75,     "cornflowerblue"),
         (pct_25,     "cornflowerblue"),
     ]:
