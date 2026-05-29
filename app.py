@@ -17,6 +17,7 @@ plt.rcParams["font.size"] = 8
 st.header("Johnson SU Distribution Fitting")
 st.write("Fits a Johnson SU distribution to daily log returns of any Yahoo Finance ticker.")
 
+
 # ── Inputs ────────────────────────────────────────────────────────────────────
 ticker = st.text_input("Enter a Yahoo Finance ticker:", help="Example: ^GSPC")
 
