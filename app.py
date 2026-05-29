@@ -215,7 +215,8 @@ sim_trading_days = len(trading_days) - 1
 
 st.write(f"Number of trading days to simulate: **{sim_trading_days:,}**")
 if st.button("Run simulation"):
-
+    days_to_add = sim_trading_days / 20
+    
     # Draw random returns from fitted Johnson SU distribution
     cdf_for_sim = stats.johnsonsu.cdf(return_data, a=su_a, b=su_b, loc=su_loc, scale=su_scale)
     returns_sim = stats.johnsonsu.ppf(
