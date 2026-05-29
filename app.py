@@ -296,12 +296,10 @@ if st.button("Run simulation"):
 
     # Return distribution at horizon
     fig5, ax5 = plt.subplots(figsize=(12, 4))
-    final_returns = (final_prices / current_price - 1)
-    ax5.hist(final_returns, bins=100, color="cornflowerblue", alpha=0.7, density=True)
-    ax5.axvline(float(np.mean(final_returns)),   color="mediumslateblue", lw=1.5, ls="--", label=f"Mean: {float(np.mean(final_returns)):.1%}")
-    ax5.axvline(float(np.median(final_returns)), color="darkmagenta",     lw=1.5, ls="--", label=f"Median: {float(np.median(final_returns)):.1%}")
-    ax5.xaxis.set_major_formatter(plt.FuncFormatter("{:,.0%}".format))
-    ax5.set_xlabel(f"Total return over {sim_years} year(s)")
+    ax5.hist(final_prices, bins=100, color="cornflowerblue", alpha=0.7, density=True)
+    ax5.axvline(mean_final,   color="mediumslateblue", lw=1.5, ls="--", label=f"Mean: {mean_final:,.2f}")
+    ax5.axvline(median_final, color="darkmagenta",     lw=1.5, ls="--", label=f"Median: {median_final:,.2f}")
+    ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date})")
     ax5.set_ylabel("Density")
     ax5.grid(True, ls="--")
     ax5.legend(fontsize=9)
