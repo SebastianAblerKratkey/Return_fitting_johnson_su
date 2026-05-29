@@ -356,6 +356,7 @@ if st.button("Run simulation"):
     ax5.set_xlabel(f"Simulated price at end of horizon ({sim_end_date.strftime('%d-%b-%y')})")
     ax5.set_ylabel("Frequency")
     ax5.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
+    ax5.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:,.0f}"))
     ax5.grid(False)
     ax5.legend(fontsize=8, frameon=False, loc="best")
     ax5.spines["top"].set_visible(False)
