@@ -260,36 +260,37 @@ if st.button("Run simulation"):
 
     # Plot
     fig4, ax4 = plt.subplots(figsize=(12, 6))
-
+    
     # Historic price from start of current year to last available date
     start_of_year = pd.Timestamp(pd.Timestamp.today().year, 1, 1)
     historic_ytd = adj_close[adj_close.index >= start_of_year]
     ax4.plot(historic_ytd.index, historic_ytd.values,
-             color="steelblue", lw=1.5, label="Historical price (YTD)")
+             color="steelblue", lw=1.5, label="Historical price (YTD)", zorder=4)
     
-    # Simulated paths starting from last known price
-    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=1.5)
+    # Simulated paths — lowest layer
+    ax4.plot(sim_dates, price_paths[:, :300], color="lightgrey", alpha=0.5, lw=1.5, zorder=1)
     
-    # Percentile bands drawn AFTER simulation lines so they appear on top
+    # Percentile bands — above simulation lines
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 5, axis=1),
                      np.percentile(price_paths, 95, axis=1),
-                     color="cornflowerblue", alpha=0.15, label="5th–95th percentile")
+                     color="cornflowerblue", alpha=0.15, label="5th–95th percentile", zorder=2)
     ax4.fill_between(sim_dates,
                      np.percentile(price_paths, 25, axis=1),
                      np.percentile(price_paths, 75, axis=1),
-                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile")
+                     color="cornflowerblue", alpha=0.3, label="25th–75th percentile", zorder=2)
     
-    # Mean path drawn on top of everything
+    # Mean path — top layer
     mean_path = price_paths.mean(axis=1)
-    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path")
+    ax4.plot(sim_dates, mean_path, color="mediumslateblue", lw=1.5, label="Mean path", zorder=3)
     
-    # Current price annotation — kept to the left of simulation start
+    # Current price annotation — anchored to last historic date, offset left
     ax4.annotate(f"{current_price:,.0f}",
                  xy=(adj_close.index[-1], current_price),
-                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*0.5), current_price * 1.02),
+                 xytext=(adj_close.index[-1] - pd.Timedelta(days=days_to_add*3), current_price * 1.02),
                  color="steelblue", fontsize=8,
-                 verticalalignment="bottom", horizontalalignment="right")
+                 verticalalignment="bottom", horizontalalignment="right",
+                 zorder=5)
     
     # Annotations at end of horizon
     for val, color in [
@@ -299,7 +300,7 @@ if st.button("Run simulation"):
     ]:
         ax4.text(sim_dates[-1] + pd.Timedelta(days=days_to_add),
                  val, f"{val:,.0f}", color=color,
-                 verticalalignment="center", fontsize=8)
+                 verticalalignment="center", fontsize=8, zorder=5)
     
     ax4.set_ylabel("Price")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
