@@ -134,13 +134,13 @@ color3 = "royalblue"
 # ── Chart A: Histogram + PDFs ─────────────────────────────────────────────────
 fig_a, ax_a = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
 
-ax_a.hist(return_data, bins=100, density=True, alpha=0.6,
+ax_a.hist(return_data, bins=100, density=True,
           color="#D1D1D1", label="Histogram of daily log-returns")
-ax_a.plot(return_data, pdf_jsu,  color="#001836", lw=1.5, label="Johnson SU distribution")
-ax_a.plot(return_data, pdf_norm, color="#8497B0",  lw=1.5, label="Normal distribution")
+ax_a.plot(return_data, pdf_jsu,  color="#001836", lw=1.5, label="PDF — Johnson SU distribution")
+ax_a.plot(return_data, pdf_norm, color="#8497B0",  lw=1.5, label="PDF — Normal distribution")
 
-ax_a.set_ylabel("")
-ax_a.set_xlabel("")
+ax_a.set_ylabel("Density")
+ax_a.set_xlabel("Daily log-returns")
 ax_a.xaxis.set_major_formatter(plt.FuncFormatter("{:,.1%}".format))
 ax_a.grid(False)
 ax_a.legend(fontsize=8, frameon=False)
@@ -160,12 +160,12 @@ plt.close(fig_a)
 # ── Chart B: Empirical vs fitted CDFs ────────────────────────────────────────
 fig_b, ax_b = plt.subplots(figsize=(15.52/2.54, 12.02/2.54))
 
-ax_b.plot(return_data, edf,      color="#D1D1D1", lw=1.5, label="Empirical distribution")
-ax_b.plot(return_data, cdf_jsu,  color="#001836", lw=1.5, label="Johnson SU distribution")
-ax_b.plot(return_data, cdf_norm, color="#8497B0",  lw=1.5, label="Normal distribution")
+ax_b.plot(return_data, edf,      color="#D1D1D1", lw=1.5, label="Empirical distribution function")
+ax_b.plot(return_data, cdf_jsu,  color="#001836", lw=1.5, label="CDF — Johnson SU distribution")
+ax_b.plot(return_data, cdf_norm, color="#8497B0",  lw=1.5, label="CDF — Normal distribution")
 
-ax_b.set_ylabel("")
-ax_b.set_xlabel("")
+ax_b.set_ylabel("Cumulative probability")
+ax_b.set_xlabel("Daily log-returns")
 ax_b.xaxis.set_major_formatter(plt.FuncFormatter("{:,.1%}".format))
 ax_b.grid(False)
 ax_b.legend(fontsize=8, frameon=False)
